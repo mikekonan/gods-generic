@@ -1,6 +1,6 @@
 package treemap
 
-import "github.com/mikekonan/gods-generic/redblacktree"
+import "github.com/mikekonan/gods-generic/tree/redblacktree"
 
 // Iterator holding the iterator's state
 type Iterator[K any, V any] struct {

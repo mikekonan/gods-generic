@@ -2,6 +2,8 @@ package redblacktree
 
 import (
 	"fmt"
+
+	"github.com/mikekonan/gods-generic/utils"
 )
 
 type color bool
@@ -14,7 +16,7 @@ const (
 type Tree[K any, V any] struct {
 	Root       *Node[K, V]
 	size       int
-	Comparator Comparator[K]
+	Comparator utils.Comparator[K]
 }
 
 // Node is a single element within the tree
@@ -28,7 +30,7 @@ type Node[K any, V any] struct {
 }
 
 // NewWithComparator instantiates a red-black tree with the custom comparator.
-func NewWithComparator[K any, V any](comparator Comparator[K]) *Tree[K, V] {
+func NewWithComparator[K any, V any](comparator utils.Comparator[K]) *Tree[K, V] {
 	return &Tree[K, V]{Comparator: comparator}
 }
 
@@ -140,6 +142,21 @@ func (tree *Tree[K, V]) Keys() []K {
 	return keys
 }
 
+// ReversedKeys returns all keys in-reverse-order
+func (tree *Tree[K, V]) ReversedKeys() []K {
+	keys := make([]K, tree.size)
+	it := tree.Iterator()
+	if it.Last() && len(keys) > 0 {
+		keys[0] = it.Key()
+	}
+
+	for i := 1; it.Prev(); i++ {
+		keys[i] = it.Key()
+	}
+
+	return keys
+}
+
 // Values returns all values in-order based on the key.
 func (tree *Tree[K, V]) Values() []V {
 	values := make([]V, tree.size)
@@ -150,7 +167,7 @@ func (tree *Tree[K, V]) Values() []V {
 	return values
 }
 
-// ReversedValues returns all values in-order based on the key.
+// ReversedValues returns all values in-reverse-order based on the key.
 func (tree *Tree[K, V]) ReversedValues() []V {
 	values := make([]V, tree.size)
 	it := tree.Iterator()

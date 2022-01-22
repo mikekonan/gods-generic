@@ -1,6 +1,6 @@
 package treemap
 
-import "github.com/mikekonan/gods-generic/redblacktree"
+import "github.com/mikekonan/gods-generic/tree/redblacktree"
 
 // Each calls the given function once for each element, passing that element's key and value.
 func (m *Map[K, V]) Each(f func(key K, value V)) {

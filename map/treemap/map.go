@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mikekonan/gods-generic/redblacktree"
+	"github.com/mikekonan/gods-generic/tree/redblacktree"
+	"github.com/mikekonan/gods-generic/utils"
 )
 
 type Map[K any, V any] struct {
@@ -12,7 +13,7 @@ type Map[K any, V any] struct {
 }
 
 // NewWithComparator instantiates a tree map with the custom comparator.
-func NewWithComparator[K any, V any](comparator redblacktree.Comparator[K]) *Map[K, V] {
+func NewWithComparator[K any, V any](comparator utils.Comparator[K]) *Map[K, V] {
 	return &Map[K, V]{tree: redblacktree.NewWithComparator[K, V](comparator)}
 }
 
@@ -55,7 +56,7 @@ func (m *Map[K, V]) Values() []V {
 	return m.tree.Values()
 }
 
-// ReversedValues returns all values in-order based on the key.
+// ReversedValues returns all values in-reversed-order based on the key.
 func (m *Map[K, V]) ReversedValues() []V {
 	return m.tree.ReversedValues()
 }
