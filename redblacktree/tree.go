@@ -150,6 +150,20 @@ func (tree *Tree[K, V]) Values() []V {
 	return values
 }
 
+// ReversedValues returns all values in-order based on the key.
+func (tree *Tree[K, V]) ReversedValues() []V {
+	values := make([]V, tree.size)
+	it := tree.Iterator()
+	if it.Last() && len(values) > 0 {
+		values[0] = it.Value()
+	}
+
+	for i := 1; it.Prev(); i++ {
+		values[i] = it.Value()
+	}
+	return values
+}
+
 // Left returns the left-most (min) node or nil if tree is empty.
 func (tree *Tree[K, V]) Left() *Node[K, V] {
 	var parent *Node[K, V]

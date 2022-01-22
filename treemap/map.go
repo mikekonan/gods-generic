@@ -55,6 +55,11 @@ func (m *Map[K, V]) Values() []V {
 	return m.tree.Values()
 }
 
+// ReversedValues returns all values in-order based on the key.
+func (m *Map[K, V]) ReversedValues() []V {
+	return m.tree.ReversedValues()
+}
+
 // Clear removes all elements from the map.
 func (m *Map[K, V]) Clear() {
 	m.tree.Clear()
