@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mikekonan/exchange-proxy/store/redblacktree"
+	"github.com/mikekonan/gods-generic/redblacktree"
 )
 
 type Map[K any, V any] struct {
@@ -46,12 +46,12 @@ func (m *Map[K, V]) Size() int {
 }
 
 // Keys returns all keys in-order
-func (m *Map[K, V]) Keys() []interface{} {
+func (m *Map[K, V]) Keys() []K {
 	return m.tree.Keys()
 }
 
 // Values returns all values in-order based on the key.
-func (m *Map[K, V]) Values() []interface{} {
+func (m *Map[K, V]) Values() []V {
 	return m.tree.Values()
 }
 

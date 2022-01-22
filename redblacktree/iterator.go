@@ -110,13 +110,13 @@ between:
 
 // Value returns the current element's value.
 // Does not modify the state of the iterator.
-func (iterator *Iterator[K, V]) Value() interface{} {
+func (iterator *Iterator[K, V]) Value() V {
 	return iterator.node.Value
 }
 
 // Key returns the current element's key.
 // Does not modify the state of the iterator.
-func (iterator *Iterator[K, V]) Key() interface{} {
+func (iterator *Iterator[K, V]) Key() K {
 	return iterator.node.Key
 }
 
