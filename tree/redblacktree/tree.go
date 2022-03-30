@@ -77,6 +77,53 @@ func (tree *Tree[K, V]) Put(key K, value V) {
 	tree.size++
 }
 
+// PutIfFunc inserts node into the tree based on func(K,V) bool.
+// Key should adhere to the comparator's type assertion, otherwise method panics.
+func (tree *Tree[K, V]) PutIfFunc(key K, value V, ifFunc func(K, K) bool) {
+	var insertedNode *Node[K, V]
+	if tree.Root == nil {
+		// Assert key is of comparator's type for initial tree
+		tree.Comparator(key, key)
+		tree.Root = &Node[K, V]{Key: key, Value: value, color: red}
+		insertedNode = tree.Root
+	} else {
+		node := tree.Root
+		loop := true
+		for loop {
+			compare := tree.Comparator(key, node.Key)
+			switch {
+			case compare == 0:
+				if !ifFunc(key, node.Key) {
+					return
+				}
+
+				node.Key = key
+				node.Value = value
+				return
+			case compare < 0:
+				if node.Left == nil {
+					node.Left = &Node[K, V]{Key: key, Value: value, color: red}
+					insertedNode = node.Left
+					loop = false
+				} else {
+					node = node.Left
+				}
+			case compare > 0:
+				if node.Right == nil {
+					node.Right = &Node[K, V]{Key: key, Value: value, color: red}
+					insertedNode = node.Right
+					loop = false
+				} else {
+					node = node.Right
+				}
+			}
+		}
+		insertedNode.Parent = node
+	}
+	tree.insertCase1(insertedNode)
+	tree.size++
+}
+
 // Get searches the node in the tree by key and returns its value or nil if key is not found in tree.
 // Second return parameter is true if key was found, otherwise false.
 // Key should adhere to the comparator's type assertion, otherwise method panics.

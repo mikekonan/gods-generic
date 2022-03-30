@@ -29,6 +29,11 @@ func (set *Set[V]) Add(items ...V) {
 	}
 }
 
+// AddIfFunc adds the items (one or more) to the set based on ifFunc.
+func (set *Set[V]) AddIfFunc(item V, ifFunc func(V, V) bool) {
+	set.tree.PutIfFunc(item, itemExists, ifFunc)
+}
+
 // Remove removes the items (one or more) from the set.
 func (set *Set[V]) Remove(items ...V) {
 	for _, item := range items {
