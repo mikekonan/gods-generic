@@ -168,6 +168,43 @@ func (tree *Tree[K, V]) Remove(key K) {
 	tree.size--
 }
 
+// RemoveIfFunc remove the node from the tree by key.
+// Key should adhere to the comparator's type assertion, otherwise method panics.
+func (tree *Tree[K, V]) RemoveIfFunc(key K, ifFunc func(K, K) bool) {
+	var child *Node[K, V]
+	node := tree.lookup(key)
+	if node == nil {
+		return
+	}
+
+	if !ifFunc(key, node.Key) {
+		return
+	}
+
+	if node.Left != nil && node.Right != nil {
+		pred := node.Left.maximumNode()
+		node.Key = pred.Key
+		node.Value = pred.Value
+		node = pred
+	}
+	if node.Left == nil || node.Right == nil {
+		if node.Right == nil {
+			child = node.Left
+		} else {
+			child = node.Right
+		}
+		if node.color == black {
+			node.color = nodeColor(child)
+			tree.deleteCase1(node)
+		}
+		tree.replaceNode(node, child)
+		if node.Parent == nil && child != nil {
+			child.color = black
+		}
+	}
+	tree.size--
+}
+
 // Empty returns true if tree does not contain any nodes
 func (tree *Tree[K, V]) Empty() bool {
 	return tree.size == 0

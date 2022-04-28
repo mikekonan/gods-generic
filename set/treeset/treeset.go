@@ -41,6 +41,11 @@ func (set *Set[V]) Remove(items ...V) {
 	}
 }
 
+// RemoveIfFunc adds the items (one or more) to the set based on ifFunc.
+func (set *Set[V]) RemoveIfFunc(item V, ifFunc func(V, V) bool) {
+	set.tree.RemoveIfFunc(item, ifFunc)
+}
+
 // Contains checks weather items (one or more) are present in the set.
 // All items have to be present in the set for the method to return true.
 // Returns true if no arguments are passed at all, i.e. set is always superset of empty set.
